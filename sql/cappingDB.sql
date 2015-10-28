@@ -88,6 +88,7 @@ CREATE TABLE Admins(
 CREATE TABLE TransferReports(
     transferReportId    SERIAL    NOT NULL,
     studentId           INTEGER   NOT NULL    REFERENCES Students (studentId),
+    reportName          TEXT      NOT NULL,
     createdOn           TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     lastUpdated         TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     PRIMARY KEY(transferReportId)
@@ -214,3 +215,66 @@ CREATE TABLE CoreRequirements(
 );
 
 
+-- Insert test data --
+
+INSERT INTO Users (userFirstName, userLastName, email, password)
+VALUES ('Steve', 'Harvey', 'steve.harvey@familyfeud.com', 'nakedGrandma1'),
+       ('Jerry', 'Springer', 'jerry.springer@baggage.com', 'imAHorriblePerson');
+
+INSERT INTO Addresses (addressStreet, addressCity, addressZip, addressState)
+VALUES ('24 Main Street', 'Orlando', '32801', 'Florida'),
+       ('53 Pendell Road', 'Poughkeepsie', '12601', 'New York');
+
+INSERT INTO Institutions (institutionAddress, institutionName)
+VALUES (2, 'Dutchess Community College');
+
+INSERT INTO Students (studentId, studentInstitutionId, homeAddressId, studentPhone, dateOfBirth)
+VALUES (1, 1, 1, '5555550147', '12 Jul 1996');
+
+INSERT INTO Admins (adminId)
+VALUES (2);
+
+INSERT INTO TransferReports (studentId, reportName)
+VALUES (1, 'myFirstReport');
+
+INSERT INTO MaristMajors (majorName, school, BAorBS)
+VALUES ('Computer Science', 'School of Computer Science and Mathematics', 'BS');
+
+INSERT INTO MajorConcentrations (majorId, concentrationName)
+VALUES (1, 'Software Development');
+
+INSERT INTO Requirements (requirementName, numCreditsRequired)
+VALUES ('Philosophy', 3), --Core
+       ('Ethics', 3), --Core
+       ('College Writing', 6), --Core
+       ('Literature', 6), --Core
+       ('Fine Arts', 3), --Core
+       ('Social Science', 6), --Core
+       ('Philosophy and Religious Studies', 3), --Core
+       ('History', 6), --Core
+       ('Natural Science', 6), --Core
+       ('Cultural Diversity', 3), --Core
+       ('Introduction to Programming', 4), --CompSci(SoftDev)
+       ('Software Development 1', 4), --CompSci(SoftDev)
+       ('Software Development 2', 4), --CompSci(SoftDev)
+       ('Software Systems and Analysis', 4), --CompSci(SoftDev)
+       ('Data Communications and Networks', 4), --CompSci(SoftDev)
+       ('Database Management', 4), --CompSci(SoftDev)
+       ('Internetworking', 4), --CompSci(SoftDev)
+       ('System Design', 4), --CompSci(SoftDev)
+       ('Computer Organization and Architecture', 4), --CompSci(SoftDev)
+       ('Algorithm Analysis and Design', 4), --CompSci(SoftDev)
+       ('System Elective Option', 4), --CompSci(SoftDev)
+       ('Language Elective Option', 3), --CompSci(SoftDev)
+       ('Third Required Elective', 3), --CompSci(SoftDev)
+       ('Project 1', 3), --CompSci(SoftDev)
+       ('Project 2', 1), --CompSci(SoftDev)
+       ('Introduction to Business and Management', 3), --CompSci(SoftDev)
+       ('Introduction to Statistics', 3), --CompSci(SoftDev)
+       ('Calculus 1', 4), --CompSci(SoftDev)
+       ('Discrete Mathematics', 4), --CompSci(SoftDev)
+       ('Calculus 1', 4), --Math Minor
+       ('Calculus 2', 4), --Math Minor
+       ('Calculus 3', 4), --Math Minor
+       ('Introduction to Mathematics Reasoning', 3), --Math Minor
+       ('Linear Algebra or Discrete Mathematics', 3); --Math Minor
