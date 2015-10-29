@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS CoursesTaken;
 DROP TABLE IF EXISTS TransfersTo;
 DROP TABLE IF EXISTS MaristCourses;
 DROP TABLE IF EXISTS InstitutionCourses;
-DROP TABLE IF EXISTS MajorSelections;
+DROP TABLE IF EXISTS ConcentrationSelections;
 DROP TABLE IF EXISTS MinorSelections;
 DROP TABLE IF EXISTS MinorRequirements;
 DROP TABLE IF EXISTS MaristMinors;
@@ -145,12 +145,19 @@ CREATE TABLE MinorRequirements(
     PRIMARY KEY(minorRequirementId)
 );
 
-CREATE TABLE MajorSelections(
-    majorId            INTEGER    NOT NULL    REFERENCES MaristMajors (majorId),
+CREATE TABLE CoreRequirements(
+    coreRequirementId    INTEGER    NOT NULL    REFERENCES Requirements (requirementId),
+    createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
+    lastUpdated    TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
+    PRIMARY KEY(coreRequirementId)
+);
+
+CREATE TABLE ConcentrationSelections(
+    concentrationId            INTEGER    NOT NULL    REFERENCES MajorConcentrations (concentrationId),
     transferReportId   INTEGER    NOT NULL    REFERENCES TransferReports (transferReportId),
     createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     lastUpdated    TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
-    PRIMARY KEY(majorId, transferReportId)
+    PRIMARY KEY(concentrationId, transferReportId)
 );
 
 CREATE TABLE MinorSelections(
@@ -205,13 +212,6 @@ CREATE TABLE CountsToward(
     createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     lastUpdated    TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     PRIMARY KEY(maristCourseId, requirementId)
-);
-
-CREATE TABLE CoreRequirements(
-    coreRequirementId    INTEGER    NOT NULL    REFERENCES Requirements (requirementId),
-    createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
-    lastUpdated    TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
-    PRIMARY KEY(coreRequirementId)
 );
 
 
@@ -278,3 +278,67 @@ VALUES ('Philosophy', 3), --Core
        ('Calculus 3', 4), --Math Minor
        ('Introduction to Mathematics Reasoning', 3), --Math Minor
        ('Linear Algebra or Discrete Mathematics', 3); --Math Minor
+
+INSERT INTO ConcentrationRequirements (concentrationRequirementId, concentrationId)
+VALUES (11, 1),
+       (12, 1),
+       (13, 1),
+       (14, 1),
+       (15, 1),
+       (16, 1),
+       (17, 1),
+       (18, 1),
+       (19, 1),
+       (20, 1),
+       (21, 1),
+       (22, 1),
+       (23, 1),
+       (24, 1),
+       (25, 1),
+       (26, 1),
+       (27, 1),
+       (28, 1),
+       (29, 1);
+
+INSERT INTO MaristMinors (minorName)
+VALUES ('Mathematics');
+
+INSERT INTO MinorRequirements (minorRequirementId, minorID)
+VALUES (30, 1),
+       (31, 1),
+       (32, 1),
+       (33, 1),
+       (34, 1);
+
+INSERT INTO CoreRequirements (coreRequirementId)
+VALUES (1),
+      (2),
+      (3),
+      (4),
+      (5),
+      (6),
+      (7),
+      (8),
+      (9),
+      (10);
+
+INSERT INTO ConcentrationSelections (concentrationId, transferReportId)
+VALUES (1, 1);
+
+INSERT INTO MinorSelections (minorID, transferReportId)
+VALUES (1, 1);
+
+/*INSERT INTO InstitutionCourses (institutionId, courseTerm, courseTitle, courseNum)
+VALUES */
+
+/*INSERT INTO MaristCourses (maristCourseTitle, maristCourseNum, maristCourseSubject, numCredits)
+VALUES */
+
+/*INSERT INTO TransfersTo (courseId, maristCourseId)
+VALUES;*/
+
+/*INSERT INTO CoursesTaken (transferReportId, courseId)
+VALUES */
+
+/*INSERT INTO CountsToward (maristCourseId, requirementId)
+VALUES */
