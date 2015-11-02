@@ -3,7 +3,10 @@
 --Project: Capping (Database)--
 --Professor: Dr. Rivas--
 
---Drop all views if they already exist--
+--Drop all stored procedures if they already exist
+DROP FUNCTION getReportCredits(integer);
+
+--  --Drop all views if they already exist--
 DROP VIEW IF EXISTS CoursesToRequirements;
 
 --Drop all tables if they already exist--
@@ -409,6 +412,10 @@ VALUES (1, 3),
        (11, 35),
        (11, 34);
 
+
+--Create Views
+
+
 CREATE VIEW CoursesToRequirements
 AS
 SELECT MaristCourses.maristCourseTitle courseName,
@@ -425,3 +432,38 @@ MaristCourses.maristCourseId = CountsToward.maristCourseId
 INNER JOIN Requirements
 ON CountsToward.requirementId = Requirements.requirementId
 ORDER BY Requirements.requirementName DESC;
+
+
+--Create Stored Procedures
+
+
+CREATE OR REPLACE FUNCTION getReportCredits(ReportId int)
+RETURNS TABLE("User First Name" TEXT, "User Last Name" TEXT, "Report Name" TEXT, "Credits Transfered" BIGINT)
+AS
+$$
+BEGIN
+RETURN QUERY
+SELECT Users.userFirstName AS "User First Name", Users.userLastName AS "User Last Name", TransferReports.reportName AS "Report Name", SUM(MaristCourses.numCredits) AS "Credits Transfered"
+FROM Users
+INNER JOIN Students
+ON Users.userId = Students.studentId
+INNER JOIN TransferReports
+ON Students.studentId = TransferReports.studentId
+INNER JOIN CoursesTaken
+ON TransferReports.transferReportId = CoursesTaken.transferReportId
+INNER JOIN InstitutionCourses
+ON InstitutionCourses.courseId = CoursesTaken.courseId
+INNER JOIN TransfersTo
+ON InstitutionCourses.courseId = TransfersTo.courseId
+INNER JOIN MaristCourses
+ON MaristCourses.maristCourseId = TransfersTo.maristCourseId
+WHERE ReportId = TransferReports.transferReportId
+GROUP BY Users.userFirstName, Users.userLastName, TransferReports.reportName;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+
+
+
