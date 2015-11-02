@@ -3,6 +3,12 @@
 --Project: Capping (Database)--
 --Professor: Dr. Rivas--
 
+--Drop all stored procedures if they already exist
+DROP FUNCTION getReportCredits(integer);
+
+--  --Drop all views if they already exist--
+DROP VIEW IF EXISTS CoursesToRequirements;
+
 --Drop all tables if they already exist--
 DROP TABLE IF EXISTS CoreRequirements;
 DROP TABLE IF EXISTS CountsToward;
@@ -277,7 +283,8 @@ VALUES ('Philosophy', 3), --Core
        ('Calculus 2', 4), --Math Minor
        ('Calculus 3', 4), --Math Minor
        ('Introduction to Mathematics Reasoning', 3), --Math Minor
-       ('Linear Algebra or Discrete Mathematics', 3); --Math Minor
+       ('Linear Algebra or Discrete Mathematics', 3), --Math Minor
+       ('Mathematics', 6); --Core
 
 INSERT INTO ConcentrationRequirements (concentrationRequirementId, concentrationId)
 VALUES (11, 1),
@@ -320,7 +327,8 @@ VALUES (1),
       (7),
       (8),
       (9),
-      (10);
+      (10),
+      (35);
 
 INSERT INTO ConcentrationSelections (concentrationId, transferReportId)
 VALUES (1, 1);
@@ -328,17 +336,134 @@ VALUES (1, 1);
 INSERT INTO MinorSelections (minorID, transferReportId)
 VALUES (1, 1);
 
-/*INSERT INTO InstitutionCourses (institutionId, courseTerm, courseTitle, courseNum)
-VALUES */
+INSERT INTO InstitutionCourses (institutionId, courseTerm, courseTitle, courseNum)
+VALUES (1, 'Fall 2014', 'Composition I', 'ENG 101'), --> College Writing I
+       (1, 'Fall 2014', 'Social Problems in Today''s World', 'BHS 103'), --> Social Problems
+       (1, 'Fall 2014', 'Precalculus Mathematics', 'MAT 185'), --> Pre-Calculus
+       (1, 'Fall 2014', 'Analytical Geometry and Calculus I', 'MAT 221'), --> Calculus with Management Applications (Calculus I?)
+       (1, 'Fall 2014', 'Introduction to Computer Science and Programming', 'CPS 141'),
+       (1, 'Spring 2015', 'Composition II', 'ENG 102'), --> Writing for College
+       (1, 'Spring 2015', 'Analytical Geometry and Calculus II', 'MAT 222'), --> Calculus II
+       (1, 'Spring 2015', 'Advanced Programming Techniques', 'CPS 142'),
+       (1, 'Spring 2015', 'Lifetime Wellness and Fitness', 'WFE 101'), --> Physical Education Elective
+       (1, 'Fall 2015', 'Data Structures', 'CPS 231'), --> Software Development I
+       (1, 'Fall 2015', 'Discrete Mathematics', 'CPS 214'), --> Discrete Mathematics I
+       (1, 'Fall 2015', 'Linear Algebra', 'MAT 215'), --> Linear Algebra
+       (1, 'Fall 2015', 'Assembler Language Programming', 'CIS 227'); --> Architecture of Hardware and System Software
 
-/*INSERT INTO MaristCourses (maristCourseTitle, maristCourseNum, maristCourseSubject, numCredits)
-VALUES */
 
-/*INSERT INTO TransfersTo (courseId, maristCourseId)
-VALUES;*/
+INSERT INTO MaristCourses (maristCourseTitle, maristCourseNum, maristCourseSubject, numCredits)
+VALUES ('College Writing 1', '116L', 'ENG', 3),
+       ('Social Problems', '202L', 'SOC', 3),
+       ('Pre-Calculus', '120L', 'MATH', 3),
+       ('Calculus with Management Applications', '115L', 'MATH', 3),
+       ('Writing for College', '120L', 'ENG', 3),
+       ('Calculus 1', '241L', 'MATH', 4),
+       ('Calculus 2', '242L', 'MATH', 4),
+       ('Physical Education Elective', '801N', 'PHED', 3),
+       ('Software Development 1', '202L', 'CMPT', 4),
+       ('Discrete Mathematics 1', '205L', 'MATH', 3),
+       ('Linear Algebra', '210L', 'MATH', 3),
+       ('Architecture of Hardware and System Software', '321L', 'ITS', 3),
+       ('Computer Science Course', '901L', 'CMSC', 3),
+       ('Computer Science Course', '902L', 'CMSC', 3);
 
-/*INSERT INTO CoursesTaken (transferReportId, courseId)
-VALUES */
+INSERT INTO TransfersTo (courseId, maristCourseId)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4),
+       (6, 5),
+       (7, 7),
+       (9, 8),
+       (10, 9),
+       (11, 10),
+       (12, 11),
+       (4, 6);
 
-/*INSERT INTO CountsToward (maristCourseId, requirementId)
-VALUES */
+INSERT INTO CoursesTaken (transferReportId, courseId)
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (1, 5),
+       (1, 6),
+       (1, 7),
+       (1, 8),
+       (1, 9),
+       (1, 10),
+       (1, 13);
+
+INSERT INTO CountsToward (maristCourseId, requirementId)
+VALUES (1, 3),
+       (2, 6),
+       (3, 35),
+       (4, 35),
+       (5, 3),
+       (6, 35),
+       (6, 28),
+       (6, 30),
+       (7, 35),
+       (7, 31),
+       (9, 12),
+       (10, 35),
+       (10, 34),
+       (10, 29),
+       (11, 35),
+       (11, 34);
+
+
+--Create Views
+
+
+CREATE VIEW CoursesToRequirements
+AS
+SELECT MaristCourses.maristCourseTitle courseName,
+       MaristCourses.maristCourseSubject sub,
+       MaristCourses.maristCourseNum courseNum,
+       MaristCourses.numCredits courseCredits,
+       Requirements.requirementName reqName,
+       Requirements.numCreditsRequired creditsNeeded
+FROM
+MaristCourses
+INNER JOIN CountsToward
+ON
+MaristCourses.maristCourseId = CountsToward.maristCourseId
+INNER JOIN Requirements
+ON CountsToward.requirementId = Requirements.requirementId
+ORDER BY Requirements.requirementName DESC;
+
+
+--Create Stored Procedures
+
+
+CREATE OR REPLACE FUNCTION getReportCredits(ReportId int)
+RETURNS TABLE("User First Name" TEXT, "User Last Name" TEXT, "Report Name" TEXT, "Credits Transfered" BIGINT)
+AS
+$$
+BEGIN
+RETURN QUERY
+SELECT Users.userFirstName AS "User First Name", Users.userLastName AS "User Last Name", TransferReports.reportName AS "Report Name", SUM(MaristCourses.numCredits) AS "Credits Transfered"
+FROM Users
+INNER JOIN Students
+ON Users.userId = Students.studentId
+INNER JOIN TransferReports
+ON Students.studentId = TransferReports.studentId
+INNER JOIN CoursesTaken
+ON TransferReports.transferReportId = CoursesTaken.transferReportId
+INNER JOIN InstitutionCourses
+ON InstitutionCourses.courseId = CoursesTaken.courseId
+INNER JOIN TransfersTo
+ON InstitutionCourses.courseId = TransfersTo.courseId
+INNER JOIN MaristCourses
+ON MaristCourses.maristCourseId = TransfersTo.maristCourseId
+WHERE ReportId = TransferReports.transferReportId
+GROUP BY Users.userFirstName, Users.userLastName, TransferReports.reportName;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+
+
+
