@@ -1,10 +1,10 @@
---Authors: Matt Pineau--
+--Authors: Matt Pineau, Ty Cavera, Conor Kincart, Nick Minott, Zain Quaayum--
 --Date: 10/26/15--
 --Project: Capping (Database)--
 --Professor: Dr. Rivas--
 
 --Drop all stored procedures if they already exist
-DROP FUNCTION getReportCredits(integer);
+DROP FUNCTION IF EXISTS getReportCredits(integer);
 
 --  --Drop all views if they already exist--
 DROP VIEW IF EXISTS CoursesToRequirements;
