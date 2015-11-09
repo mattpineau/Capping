@@ -5,6 +5,7 @@
 
 --Drop all stored procedures if they already exist
 DROP FUNCTION IF EXISTS getReportCredits(integer);
+DROP FUNCTION IF EXISTS addMaristCourse(text, text, text);
 
 --  --Drop all views if they already exist--
 DROP VIEW IF EXISTS CoursesToRequirements;
@@ -468,7 +469,13 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
-
-
-
+CREATE OR REPLACE FUNCTION addMaristCourse(courseTitle text, courseNum text, courseSubject text)
+RETURNS VOID
+AS
+$$
+BEGIN
+INSERT INTO maristCourses(maristCourseTitle, maristCourseNum, maristCourseSubject)
+VALUES (courseTitle, courseNum, courseSubject);
+END;
+$$
+LANGUAGE plpgsql;
