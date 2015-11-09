@@ -34,10 +34,12 @@ DROP TABLE IF EXISTS Users;
 
 --Drop all types if they already exist--
 DROP TYPE IF EXISTS typeOfDegree;
+DROP TYPE IF EXISTS semester;
 
 
 --Create any necessary enumerations (types)--
 CREATE TYPE typeOfDegree as ENUM ('BA', 'BS');
+CREATE TYPE semester as ENUM ('Winter', 'Spring', 'Summer', 'Fall');
 
 
 --Create Tables--
@@ -177,7 +179,6 @@ CREATE TABLE MinorSelections(
 CREATE TABLE InstitutionCourses(
     courseId         SERIAL     NOT NULL,
     institutionId    INTEGER    NOT NULL    REFERENCES Institutions (institutionId),
-    courseTerm       TEXT       NOT NULL,
     courseTitle      TEXT       NOT NULL,
     courseNum        TEXT       NOT NULL,
     createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
@@ -199,6 +200,8 @@ CREATE TABLE MaristCourses(
 CREATE TABLE TransfersTo(
     courseId          INTEGER    NOT NULL    REFERENCES InstitutionCourses (courseId),
     maristCourseId    INTEGER    NOT NULL    REFERENCES MaristCourses (maristCourseId),
+    validThroughSemester semester,
+    validThroughYear INTEGER,
     createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     lastUpdated    TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     PRIMARY KEY(courseId, maristCourseId)
@@ -207,6 +210,8 @@ CREATE TABLE TransfersTo(
 CREATE TABLE CoursesTaken(
     transferReportId    INTEGER    NOT NULL    REFERENCES TransferReports (transferReportId),
     courseId            INTEGER    NOT NULL    REFERENCES InstitutionCourses (courseId),
+    semesterTaken       semester   NOT NULL,
+    yearTaken           INTEGER    NOT NULL,
     createdOn      TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     lastUpdated    TIMESTAMP WITHOUT TIME ZONE    NOT NULL    DEFAULT (now() at time zone 'utc'),
     PRIMARY KEY(transferReportId, courseId)
@@ -336,20 +341,20 @@ VALUES (1, 1);
 INSERT INTO MinorSelections (minorID, transferReportId)
 VALUES (1, 1);
 
-INSERT INTO InstitutionCourses (institutionId, courseTerm, courseTitle, courseNum)
-VALUES (1, 'Fall 2014', 'Composition I', 'ENG 101'), --> College Writing I
-       (1, 'Fall 2014', 'Social Problems in Today''s World', 'BHS 103'), --> Social Problems
-       (1, 'Fall 2014', 'Precalculus Mathematics', 'MAT 185'), --> Pre-Calculus
-       (1, 'Fall 2014', 'Analytical Geometry and Calculus I', 'MAT 221'), --> Calculus with Management Applications (Calculus I?)
-       (1, 'Fall 2014', 'Introduction to Computer Science and Programming', 'CPS 141'),
-       (1, 'Spring 2015', 'Composition II', 'ENG 102'), --> Writing for College
-       (1, 'Spring 2015', 'Analytical Geometry and Calculus II', 'MAT 222'), --> Calculus II
-       (1, 'Spring 2015', 'Advanced Programming Techniques', 'CPS 142'),
-       (1, 'Spring 2015', 'Lifetime Wellness and Fitness', 'WFE 101'), --> Physical Education Elective
-       (1, 'Fall 2015', 'Data Structures', 'CPS 231'), --> Software Development I
-       (1, 'Fall 2015', 'Discrete Mathematics', 'CPS 214'), --> Discrete Mathematics I
-       (1, 'Fall 2015', 'Linear Algebra', 'MAT 215'), --> Linear Algebra
-       (1, 'Fall 2015', 'Assembler Language Programming', 'CIS 227'); --> Architecture of Hardware and System Software
+INSERT INTO InstitutionCourses (institutionId, courseTitle, courseNum)
+VALUES (1, 'Composition I', 'ENG 101'), --> College Writing I
+       (1, 'Social Problems in Today''s World', 'BHS 103'), --> Social Problems
+       (1, 'Precalculus Mathematics', 'MAT 185'), --> Pre-Calculus
+       (1, 'Analytical Geometry and Calculus I', 'MAT 221'), --> Calculus with Management Applications (Calculus I?)
+       (1, 'Introduction to Computer Science and Programming', 'CPS 141'),
+       (1, 'Composition II', 'ENG 102'), --> Writing for College
+       (1, 'Analytical Geometry and Calculus II', 'MAT 222'), --> Calculus II
+       (1, 'Advanced Programming Techniques', 'CPS 142'),
+       (1, 'Lifetime Wellness and Fitness', 'WFE 101'), --> Physical Education Elective
+       (1, 'Data Structures', 'CPS 231'), --> Software Development I
+       (1, 'Discrete Mathematics', 'CPS 214'), --> Discrete Mathematics I
+       (1, 'Linear Algebra', 'MAT 215'), --> Linear Algebra
+       (1, 'Assembler Language Programming', 'CIS 227'); --> Architecture of Hardware and System Software
 
 
 INSERT INTO MaristCourses (maristCourseTitle, maristCourseNum, maristCourseSubject, numCredits)
@@ -381,18 +386,18 @@ VALUES (1, 1),
        (12, 11),
        (4, 6);
 
-INSERT INTO CoursesTaken (transferReportId, courseId)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
-       (1, 5),
-       (1, 6),
-       (1, 7),
-       (1, 8),
-       (1, 9),
-       (1, 10),
-       (1, 13);
+INSERT INTO CoursesTaken (transferReportId, courseId, semesterTaken, yearTaken)
+VALUES (1, 1, 'Fall', 2013),
+       (1, 2, 'Fall', 2013),
+       (1, 3, 'Spring', 2014),
+       (1, 4, 'Fall', 2013),
+       (1, 5, 'Fall', 2013),
+       (1, 6, 'Spring', 2014),
+       (1, 7, 'Spring', 2014),
+       (1, 8, 'Fall', 2013),
+       (1, 9, 'Spring', 2014),
+       (1, 10, 'Spring', 2014),
+       (1, 13, 'Fall', 2013);
 
 INSERT INTO CountsToward (maristCourseId, requirementId)
 VALUES (1, 3),
