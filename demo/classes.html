@@ -428,57 +428,59 @@ $(function() {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr id='addr0' data-id="0" class="hidden">
+                    <form action = "addTransferReport.php" method = "POST">
+                        <tbody>
+                            <tr id='addr0' data-id="0" class="hidden">
 
-                            <td data-name="name">
-                                <select name="selcname">
-                                    <option>Select Option</option>
-                                      <?php
+                                <td data-name="name">
+                                    <select name="selcname">
+                                        <option>Select Option</option>
+                                          <?php
 
-    $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123")
-    or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123")
+        or die('Could not connect: ' . pg_last_error());
 
-    $stat = pg_connection_status($dbconn);
-  if ($stat === PGSQL_CONNECTION_OK) {
-      echo 'Connection status ok';
-  } else {
-      echo 'Connection status bad';
-  }
-      
-                                   $sql = pg_query($db, "SELECT courseTitle FROM InstitutionCourses");
-while ($row = pg_fetch_row($result)) {
-echo "<option value=$row[0]>$row[2]</option>";}
-pg_close($db);
-?>
-                                </select>
-                            </td>
-                            <td data-name="mail">
-                                <input type="text" name='mail0' placeholder='course id' class="form-control" disabled="true" />
-                            </td>
-                            <td data-name="desc">
-                                <select name="selyr">
-                                    <option value"">Select Year</option>
-                                    <option value"1">2015</option>
-                                    <option value"2">2014</option>
-                                    <option value"3">2013</option>
-                                </select>
-                            </td>
-                            <td data-name="sel">
-                                <select name="selterm">
-                                    <option value"">Select term</option>
-                                    <option value"1">Spring</option>
-                                    <option value"2">Fall</option>
-                                    <option value"3">Winter</option>
-                                    <option value"4">Summer</option>
-                                </select>
-                            </td>
-                            <td data-name="del">
-                                <button nam"del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
+        $stat = pg_connection_status($dbconn);
+      if ($stat === PGSQL_CONNECTION_OK) {
+          echo 'Connection status ok';
+      } else {
+          echo 'Connection status bad';
+      }
 
-                            </td>
-                        </tr>
-                    </tbody>
+                                       $sql = pg_query($db, "SELECT courseTitle FROM InstitutionCourses");
+    while ($row = pg_fetch_row($result)) {
+    echo "<option value=$row[0]>$row[2]</option>";}
+    pg_close($db);
+    ?>
+                                    </select>
+                                </td>
+                                <td data-name="mail">
+                                    <input type="text" name='mail0' placeholder='course id' class="form-control" disabled="true" />
+                                </td>
+                                <td data-name="desc">
+                                    <select name="selyr">
+                                        <option value"">Select Year</option>
+                                        <option value"1">2015</option>
+                                        <option value"2">2014</option>
+                                        <option value"3">2013</option>
+                                    </select>
+                                </td>
+                                <td data-name="sel">
+                                    <select name="selterm">
+                                        <option value"">Select term</option>
+                                        <option value"1">Spring</option>
+                                        <option value"2">Fall</option>
+                                        <option value"3">Winter</option>
+                                        <option value"4">Summer</option>
+                                    </select>
+                                </td>
+                                <td data-name="del">
+                                    <button nam"del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </form>
                 </table>
             </div>
         </div>

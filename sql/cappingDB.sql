@@ -385,7 +385,9 @@ VALUES (1, 1),
        (10, 9),
        (11, 10),
        (12, 11),
-       (4, 6);
+       (4, 6),
+       (5, 13),
+       (8, 14);
 
 INSERT INTO CoursesTaken (transferReportId, courseId, semesterTaken, yearTaken)
 VALUES (1, 1, 'Fall', 2013),
