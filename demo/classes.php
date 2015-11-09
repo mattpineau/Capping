@@ -433,7 +433,7 @@ $(function() {
 
                             <td data-name="name">
                                 <select name="selcname">
-                                    <option>Select Option</option>
+                                     <option>Select Option</option>
                                       <?php
 
     $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123")
@@ -446,9 +446,9 @@ $(function() {
       echo 'Connection status bad';
   }
       
-                                   $sql = pg_query($db, "SELECT courseTitle FROM InstitutionCourses");
+                                   $result = pg_query($dbconn, "SELECT courseTitle, institutionId FROM InstitutionCourses");
 while ($row = pg_fetch_row($result)) {
-echo "<option value=$row[0]>$row[2]</option>";}
+echo "<option value=$row[0]>$row[0]</option>";}
 pg_close($db);
 ?>
                                 </select>
