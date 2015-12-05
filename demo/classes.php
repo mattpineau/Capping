@@ -482,7 +482,7 @@ pg_close($db);
                 </table>
             </div>
         </div>
-        <a id="add_row1" class="btn btn-success pull-right">Finish</a>
+        <a href="results.php" id="add_row1" class="btn btn-success pull-right">Finish</a>
 
         <a id="add_row" class="btn btn-default pull-right">Add Class </a>
 
