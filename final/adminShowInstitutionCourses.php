@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Admin | Marist Course Added</title>
+  <title>Admin | Institution Courses</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,6 +50,8 @@
                  </ul>
     <ul class="nav navbar-nav navbar-right">
                     <li>
+                    
+                    
                         <a class="pull-right" href="logout.php"> Log Out</a>
                         <a class="pull-right" href="adminHome.php">Home</a>
                     </li>
@@ -60,36 +62,62 @@
         </div>
         <!-- /.container -->
     </nav>
-    <center><h3>
-	<?php
+    <center>
+  <h1>Admin - Show Institution Courses </h1>
+  <?php
 
-	$dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
+    $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error());
 
-	    $maristCourseTitle = pg_escape_string($_POST['maristCourseTitle']);
-        $maristCourseNum = pg_escape_string($_POST['maristCourseNum']);
-        $maristCourseSubject = pg_escape_string($_POST['maristCourseSubject']);
-    
-    $query = "INSERT INTO maristcourses(maristCourseTitle, maristCourseNum, maristCourseSubject) VALUES('" . $maristCourseTitle . "', '" . $maristCourseNum . "', '" . $maristCourseSubject . "')";
-    $result = pg_query($query);
-    if (!$result) {
-    	$errormessage = pg_last_error();
-    	echo "Error with query: " . $errormessage;
-    	exit();
-    }
-    printf ("These values were inserted into the database: %s %s %s", $maristCourseTitle, $maristCourseSubject, $maristCourseNum);
-    pg_free_result($result);
-    pg_close();
+    $stat = pg_connection_status($dbconn);
+  if ($stat === PGSQL_CONNECTION_OK) {
+      // echo 'Connection status ok';
+  } else {
+      echo 'Connection status bad';
+  }    
 
-    ?>
-    <p><a href = "adminAddMaristCourse.php">Add another Marist course?</a></p>
-    <p><a href = "adminHome.php">Click here to go home.</a></p>
-</center></h3>
-    <footer class="footer">
+  
+    $query = 'SELECT coursetitle, coursenum, createdOn, lastUpdated FROM institutioncourses ORDER BY coursenum';
+    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+
+    $i = 0;
+
+    echo '<html><body><table><tr>';
+      while ($i < pg_num_fields($result))
+      {
+        echo '<td>' . $fieldName . '</td>';
+        $i = $i + 1;
+      }
+        echo '</tr>';
+  $i = 0;
+
+while ($row = pg_fetch_row($result)) 
+{
+  echo '<tr>';
+  $count = count($row);
+  $y = 0;
+  while ($y < $count)
+  {
+    $c_row = current($row);
+    echo '<td>' . $c_row . '</td>';
+    next($row);
+    $y = $y + 1;
+  }
+  echo '</tr>';
+  $i = $i + 1;
+}
+
+pg_free_result($result);
+
+pg_close($dbconnection);
+
+?>
+
+</center>
+<footer class="footer">
       <div class="container">
         <p class="text-muted">© 2015 Marist College</p>
       </div>
     </footer>
- 
 </body>
 
 <!-- JavaScript Files  -->
@@ -98,4 +126,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/myScripts.js"></script>
+
 </html>
+  
+
+

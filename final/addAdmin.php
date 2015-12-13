@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Admin | Marist Course Added</title>
+    <title>Admin | New Admin Added</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,23 +65,34 @@
 
 	$dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
 
-	    $maristCourseTitle = pg_escape_string($_POST['maristCourseTitle']);
-        $maristCourseNum = pg_escape_string($_POST['maristCourseNum']);
-        $maristCourseSubject = pg_escape_string($_POST['maristCourseSubject']);
+	    $newAdminFirstName = pg_escape_string($_POST['newAdminFirstName']);
+        $newAdminLastName = pg_escape_string($_POST['newAdminLastName']);
+        $newAdminEmail = pg_escape_string($_POST['newAdminEmail']);
+        $newAdminPassword = pg_escape_string($_POST['newAdminPassword']);
     
-    $query = "INSERT INTO maristcourses(maristCourseTitle, maristCourseNum, maristCourseSubject) VALUES('" . $maristCourseTitle . "', '" . $maristCourseNum . "', '" . $maristCourseSubject . "')";
-    $result = pg_query($query);
-    if (!$result) {
+    $query1 = "INSERT INTO users(userfirstname, userlastname, email, password) VALUES('" . $newAdminFirstName . "', '" . $newAdminLastName . "', '" . $newAdminEmail . "', '" . $newAdminPassword ."')";
+    $result1 = pg_query($query1);
+    if (!$result1) {
     	$errormessage = pg_last_error();
     	echo "Error with query: " . $errormessage;
     	exit();
     }
-    printf ("These values were inserted into the database: %s %s %s", $maristCourseTitle, $maristCourseSubject, $maristCourseNum);
-    pg_free_result($result);
+
+    $query2 = "INSERT INTO admins(adminid) SELECT userid FROM users WHERE users.userfirstname = '$newAdminFirstName' AND users.userlastname = '$newAdminLastName' AND users.email = '$newAdminEmail' AND users.password = '$newAdminPassword'";
+    $result2 = pg_query($query2);
+    if (!$result2) {
+        $errormessage = pg_last_error();
+        echo "Error with query: " . $errormessage;
+        exit();
+    }
+
+    printf ("These values were inserted into the database: %s %s %s %s", $newAdminFirstName, $newAdminLastName, $newAdminEmail, $newAdminPassword);
+    pg_free_result($result1);
+    pg_free_result($result2);
     pg_close();
 
     ?>
-    <p><a href = "adminAddMaristCourse.php">Add another Marist course?</a></p>
+    <p><a href = "adminAddAdmin.php">Add another administrator?</a></p>
     <p><a href = "adminHome.php">Click here to go home.</a></p>
 </center></h3>
     <footer class="footer">

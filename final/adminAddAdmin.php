@@ -1,6 +1,10 @@
+<?php
+session_start();
+?>
+
 <html>
 <head>
-    <title>Admin | Marist Course Added</title>
+    <title>Admin | Add Admin</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,37 +64,30 @@
         </div>
         <!-- /.container -->
     </nav>
-    <center><h3>
-	<?php
 
-	$dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
-
-	    $maristCourseTitle = pg_escape_string($_POST['maristCourseTitle']);
-        $maristCourseNum = pg_escape_string($_POST['maristCourseNum']);
-        $maristCourseSubject = pg_escape_string($_POST['maristCourseSubject']);
     
-    $query = "INSERT INTO maristcourses(maristCourseTitle, maristCourseNum, maristCourseSubject) VALUES('" . $maristCourseTitle . "', '" . $maristCourseNum . "', '" . $maristCourseSubject . "')";
-    $result = pg_query($query);
-    if (!$result) {
-    	$errormessage = pg_last_error();
-    	echo "Error with query: " . $errormessage;
-    	exit();
-    }
-    printf ("These values were inserted into the database: %s %s %s", $maristCourseTitle, $maristCourseSubject, $maristCourseNum);
-    pg_free_result($result);
-    pg_close();
 
-    ?>
-    <p><a href = "adminAddMaristCourse.php">Add another Marist course?</a></p>
-    <p><a href = "adminHome.php">Click here to go home.</a></p>
-</center></h3>
+    <form action = "addAdmin.php" method = "post">
+                 
+        First Name: <input type = "text" name = "newAdminFirstName" maxlength = "15" size = "15"><br>
+        
+        Last Name: <input type = "text" name = "newAdminLastName" maxlength = "15" size = "15"><br>
+         
+        E-Mail address: <input type = "text" name = "newAdminEmail" maxlength = "40" size = "40"><br>
+
+        Password: <input type = "text" name = "newAdminPassword" maxlength = "40" size = "40"><br>
+         
+        <input type= "submit" value = "Submit">
+         
+    </form>
+
+
     <footer class="footer">
       <div class="container">
         <p class="text-muted">© 2015 Marist College</p>
       </div>
     </footer>
- 
-</body>
+  </body>
 
 <!-- JavaScript Files  -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -98,4 +95,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/myScripts.js"></script>
+
 </html>

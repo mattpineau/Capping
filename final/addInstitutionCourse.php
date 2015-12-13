@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Admin | Marist Course Added</title>
+    <title>Admin | Institution Course Added</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,23 +65,23 @@
 
 	$dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
 
-	    $maristCourseTitle = pg_escape_string($_POST['maristCourseTitle']);
-        $maristCourseNum = pg_escape_string($_POST['maristCourseNum']);
-        $maristCourseSubject = pg_escape_string($_POST['maristCourseSubject']);
+	    $institutionCourseTitle = pg_escape_string($_POST['institutionCourseTitle']);
+        $institutionCourseNum = pg_escape_string($_POST['institutionCourseNum']);
+        
     
-    $query = "INSERT INTO maristcourses(maristCourseTitle, maristCourseNum, maristCourseSubject) VALUES('" . $maristCourseTitle . "', '" . $maristCourseNum . "', '" . $maristCourseSubject . "')";
+    $query = "INSERT INTO institutioncourses(institutionid, coursetitle, coursenum) VALUES(1, '" . $institutionCourseTitle . "', '" . $institutionCourseNum . "')";
     $result = pg_query($query);
     if (!$result) {
     	$errormessage = pg_last_error();
     	echo "Error with query: " . $errormessage;
     	exit();
     }
-    printf ("These values were inserted into the database: %s %s %s", $maristCourseTitle, $maristCourseSubject, $maristCourseNum);
+    printf ("These values were inserted into the database: %s %s", $institutionCourseTitle, $institutionCourseNum);
     pg_free_result($result);
     pg_close();
 
     ?>
-    <p><a href = "adminAddMaristCourse.php">Add another Marist course?</a></p>
+    <p><a href = "adminAddInstitutionCourse.php">Add another Institution course?</a></p>
     <p><a href = "adminHome.php">Click here to go home.</a></p>
 </center></h3>
     <footer class="footer">

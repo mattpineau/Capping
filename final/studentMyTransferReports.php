@@ -1,6 +1,10 @@
+﻿<?php 
+    session_start();
+?>
+
 <html>
 <head>
-    <title>Admin | Marist Course Added</title>
+  <title>Marist College | My Transfer Reports</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,8 +54,9 @@
                  </ul>
     <ul class="nav navbar-nav navbar-right">
                     <li>
+                    
+                        <a class="pull-right" href="userHome.php">Home</a>
                         <a class="pull-right" href="logout.php"> Log Out</a>
-                        <a class="pull-right" href="adminHome.php">Home</a>
                     </li>
                     
                 </ul>
@@ -60,36 +65,45 @@
         </div>
         <!-- /.container -->
     </nav>
-    <center><h3>
-	<?php
 
-	$dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
-
-	    $maristCourseTitle = pg_escape_string($_POST['maristCourseTitle']);
-        $maristCourseNum = pg_escape_string($_POST['maristCourseNum']);
-        $maristCourseSubject = pg_escape_string($_POST['maristCourseSubject']);
+       <center><h3></h3>
+      
     
-    $query = "INSERT INTO maristcourses(maristCourseTitle, maristCourseNum, maristCourseSubject) VALUES('" . $maristCourseTitle . "', '" . $maristCourseNum . "', '" . $maristCourseSubject . "')";
-    $result = pg_query($query);
-    if (!$result) {
-    	$errormessage = pg_last_error();
-    	echo "Error with query: " . $errormessage;
-    	exit();
-    }
-    printf ("These values were inserted into the database: %s %s %s", $maristCourseTitle, $maristCourseSubject, $maristCourseNum);
-    pg_free_result($result);
-    pg_close();
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
-    ?>
-    <p><a href = "adminAddMaristCourse.php">Add another Marist course?</a></p>
-    <p><a href = "adminHome.php">Click here to go home.</a></p>
-</center></h3>
-    <footer class="footer">
+    <div class="container">
+  <h2>My Transfer Reports</h2>         
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Report Name</th>
+      </tr>
+    </thead>
+    <tbody>
+        <?php 
+            $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
+            // Query to get all of the user's transfer reports
+            $result = pg_query_params($dbconn, 'SELECT reportName, transferReportId FROM TransferReports WHERE studentId = $1', array($_SESSION['currentUserId']));
+            // For every row, print a table row with the name
+            while ($row = pg_fetch_row($result)) {
+              echo '<tr style = "cursor: pointer" onclick = "location.href = \'transferReportView.php?transferReportId=' . $row[1] . '\'"><td>' . $row[0] . '</td></tr>';
+            }
+            pg_free_result($result);
+        ?>
+    </tbody>
+  </table>
+</div>
+
+</center>
+	
+	
+	
+	<footer class="footer">
       <div class="container">
         <p class="text-muted">© 2015 Marist College</p>
       </div>
     </footer>
- 
 </body>
 
 <!-- JavaScript Files  -->
@@ -98,4 +112,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/myScripts.js"></script>
+
 </html>
