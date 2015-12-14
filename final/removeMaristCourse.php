@@ -74,6 +74,11 @@
     $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error()); 
        $courseToBeRemoved = $_POST['courseToDelete1']; // Get value selected
        $courseToBeRemoved = pg_escape_string($courseToBeRemoved); // Escape the string
+       
+       // We must delete from TransfersTo first
+       $result = pg_query_params($dbconn, 'DELETE FROM TransfersTo WHERE maristCourseId = $1', array($courseToBeRemoved));
+
+       pg_free_result($result); // Free the result
             
     $query = "DELETE FROM maristcourses WHERE maristcourseid = '$courseToBeRemoved'"; // Delete query
 

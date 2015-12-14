@@ -3,7 +3,7 @@
     
     // Check for all fields to have something entered
     if (empty($_POST['email'])){
-    	array_push($errors, "<center><div class='alert alert-danger fade in' role='alert'><a href='#' class='close' data-dismiss='alert'>&times;</a>Sorry, but the Email field is empty");
+    	array_push($errors, "Sorry, but the Email field is empty");
     }
     if (empty($_POST['fname'])){
     	array_push($errors, "First Name field empty");
@@ -21,7 +21,8 @@
     	array_push($errors, "<center><div class='alert alert-danger fade in' role='alert'>Password and confirmation do not match</div></div>");
     }
     if (!empty($errors)) {
-    	// Print errors and return to registration...
+    	echo '<center><div class="alert alert-danger fade in" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>';
+        // Print errors and return to registration...
     	foreach($errors as &$error) {
     		echo $error . "<br>";
     	}

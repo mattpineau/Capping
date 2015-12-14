@@ -74,7 +74,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
     <div class="container">
-        <h5>*Note: If not all fields are filled our, the class will not be counted in the credit report.</h5>
+        <h5>*Note: If not all fields are filled out, the class will not be counted in the credit report.</h5>
         <form action = "getCreditReport.php" method = "post">
         <div class="row clearfix">
             <div class="col-md-12 table-responsive">
@@ -96,7 +96,7 @@
                     </thead>
                     <tbody>
                         
-                        <tr id='addr0' data-id="0" class='hidden'>
+                        <tr id='addr0' data-id="0" class='hidden' style = 'cursor: default;'>
 
                             <td data-name="courseDropdown">
                                 <select name="courseDropdown">

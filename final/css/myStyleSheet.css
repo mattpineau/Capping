@@ -174,5 +174,5 @@ code {
 
 
 .table-sortable tbody tr {
-    cursor: move;
+    cursor: auto;
 }

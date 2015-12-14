@@ -88,7 +88,7 @@
 			<div class="col-sm-6 col-sm-offset-3">
 
        	<input type="submit" name="admin-submit-addcourses" id="admin-submit-addcourses" tabindex="1" class="form-control btn btn-default" value="Create Transfer Report">
-
+</div>
        </div>
    </form>
 
@@ -100,7 +100,7 @@
 			<div class="col-sm-6 col-sm-offset-3">
 
        	<input type="submit"  name="admin-submit-editcourses" id="admin-submit-editcourses" tabindex="2" class="form-control btn btn-default" value="My Transfer Reports">
-
+</div>
        </div>
 
 	</form>       
