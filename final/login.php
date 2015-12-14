@@ -8,14 +8,14 @@
     if (isset($_POST['login-submit'])) {
 	// Check if email is empty and throw error if true
 	    if (empty($_POST[ 'email' ])) {
-		    $error = "The email box was left empty.  Please enter a valid email.<br>";
+		    $error = "<center><div class='alert alert-danger fade in' role='alert'> The email box was left empty.  Please enter a valid email.<br></div>";
             echo $error; //Echo error to user
             include('index.html'); // Include the index page to try again
 	    }
 	    
         // Check if the password is empty and throw an error if true
 	    else if (empty($_POST[ 'password' ])) {
-		    $error = "The password box was left empty.  Please enter the valid password.<br>";
+		    $error = "<center><div class='alert alert-danger' role='alert'> The password box was left empty.  Please enter the valid password.<br></div>";
             echo $error; // Echo error to user
             include('index.html'); // Include the index page to try again
 	    }
@@ -26,6 +26,8 @@
 
 		    $email = $_POST[ 'email' ]; // Define email variable
 		    $password = $_POST[ 'password' ]; // Define password variable
+
+            $password = hash('sha256', $password); // Store hashed
 
 		    // Query to check email and password combination against students
             $queryResult1 = pg_query_params( $dbconn, 'SELECT users.userid, users.userfirstname FROM students INNER JOIN users ON students.studentid = users.userid WHERE users.email = $1 AND users.password = $2', array($email, $password) );
@@ -65,7 +67,7 @@
             }
             // Otherwise the email/password combo was WRONG
             else {
-            	$error = 'The email/password combination was wrong!';
+            	$error = "<center><div class='alert alert-danger' role='alert'> Sorry, that email / password combination was wrong!</div>";
             	// Destroy the session!!!
             	session_destroy();
             	

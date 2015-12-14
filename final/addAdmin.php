@@ -1,3 +1,11 @@
+<?php 
+    session_start();
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
+?>
+
 <html>
 <head>
     <title>Admin | New Admin Added</title>
@@ -69,6 +77,8 @@
         $newAdminLastName = pg_escape_string($_POST['newAdminLastName']);
         $newAdminEmail = pg_escape_string($_POST['newAdminEmail']);
         $newAdminPassword = pg_escape_string($_POST['newAdminPassword']);
+
+        $newAdminPassword = hash('sha256', $newAdminPassword);
     
     $query1 = "INSERT INTO users(userfirstname, userlastname, email, password) VALUES('" . $newAdminFirstName . "', '" . $newAdminLastName . "', '" . $newAdminEmail . "', '" . $newAdminPassword ."')";
     $result1 = pg_query($query1);
@@ -86,7 +96,7 @@
         exit();
     }
 
-    printf ("These values were inserted into the database: %s %s %s %s", $newAdminFirstName, $newAdminLastName, $newAdminEmail, $newAdminPassword);
+    printf ("These values were inserted into the database: %s %s %s", $newAdminFirstName, $newAdminLastName, $newAdminEmail);
     pg_free_result($result1);
     pg_free_result($result2);
     pg_close();

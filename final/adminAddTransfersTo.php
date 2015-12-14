@@ -9,7 +9,7 @@
 
 <html>
 <head>
-  <title>Admin | Remove Course</title>
+  <title>Admin | Add Transfer</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,9 +70,9 @@
         <!-- /.container -->
     </nav>
 
-    <center><h3>Which course would you like to remove?</h3></center>
+    <center><h3>Which course would you like to transfer?</h3></center>
 
-    <form action="removeMaristCourse.php" method="post">
+    <form action="addTransfersTo.php" method="post">
 
     <div class="container">
         <div class="row clearfix">
@@ -81,34 +81,51 @@
                     <thead>
                         <tr>
                             <th class="text-center">
-                                Course Name
+                                DCC Course
+                            </th>
+                            <th class="text-center">
+                                Marist Course
                             </th>
                              </tr>
                               </thead>
                               <tbody>
                                   <tr id='addr0' data-id="0" class='hidden'>
 
-                                    <td data-name="courseToDelete">
-                                      <select id = "courseToDelete" name="courseToDelete">
+                                    <td data-name="dccCourse">
+                                      <select id = "dccCourse" name="dccCourse">
                                         <option value = "" selected>Select Course</option>
-                                          
-                                      <?php  
+                                        <?php 
                                         $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123")
-                                        or die('Could not connect: ' . pg_last_error());
-                                  
-                                        $result = pg_query($dbconn, "SELECT maristcoursetitle, maristcourseid FROM maristcourses");
-                                        while ($row = pg_fetch_array($result)) {
-                                             echo '<option value = "'.$row['maristcourseid'].'">'.$row['maristcoursetitle'].'</option>';
-                                        }
-                                        pg_close($db);
-                                      ?>
+                                        or die('Could not connect: ' . pg_last_error()); 
+                                      $result1 = pg_query($dbconn, "SELECT courseTitle, courseId FROM InstitutionCourses;");
+                                      while ($row1 = pg_fetch_array($result1)) {
+                                          echo '<option value = "'.$row1[1].'">'.$row1[0].'</option>';
+                                      }
+                                      pg_free_result($result1);
+                                      
+                                ?>
+                                          
+                                      
+                        </select>
+                      </td>
+                      <td data-name="maristCourse">
+                           <select id = "maristCourse" name="maristCourse">
+                               <option value = "" selected>Select Course</option>
+                                <?php  
+                                    $result = pg_query($dbconn, "SELECT maristcoursetitle, maristcourseid FROM maristcourses");
+                                    while ($row = pg_fetch_array($result)) {
+                                         echo '<option value = "'.$row[1].'">'.$row[0].'</option>';
+                                    }
+                                    pg_free_result($result);
+                                    pg_close($db);
+                                  ?>
                         </select>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <center><input type= "submit" class="btn btn-danger" value = "Remove Course"></center>
+              <center><input type= "submit" class="btn btn-success" value = "Add Transfer"></center>
             </form>
 
 

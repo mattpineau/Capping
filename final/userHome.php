@@ -1,5 +1,10 @@
 <?php
     session_start();
+
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
     // Unset the coursesTaken session var if going home
     if (isset($_SESSION['coursesTaken'])) {
         unset($_SESSION['coursesTaken']);
@@ -82,7 +87,7 @@
        		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 
-       	<input type="submit" name="admin-submit-addcourses" id="admin-submit-addcourses" tabindex="4" class="form-control btn btn-admindemo" value="Create Transfer Report">
+       	<input type="submit" name="admin-submit-addcourses" id="admin-submit-addcourses" tabindex="1" class="form-control btn btn-default" value="Create Transfer Report">
 
        </div>
    </form>
@@ -94,7 +99,7 @@
        		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 
-       	<input type="submit"  name="admin-submit-editcourses" id="admin-submit-editcourses" tabindex="4" class="form-control btn btn-admindemo" value="My Transfer Reports">
+       	<input type="submit"  name="admin-submit-editcourses" id="admin-submit-editcourses" tabindex="2" class="form-control btn btn-default" value="My Transfer Reports">
 
        </div>
 

@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
 ?>
 
 <html>
@@ -65,20 +70,21 @@ session_start();
         <!-- /.container -->
     </nav>
 
-    
+    <div class="container">
+        <p>Fill out the form below to add a new Marist course to the system.</p>
 
-    <form action = "addMaristCourse.php" method = "post">
+    <form action = "addMaristCourse.php" method = "post" >
                  
-        Course Title: <input type = "text" name = "maristCourseTitle" maxlength = "60" size = "60"><br>
+        Course Title: <input type = "text" class="form-control" name = "maristCourseTitle" maxlength = "60" size = "60"><br>
         
-        Course Number: <input type = "text" name = "maristCourseNum" maxlength = "7" size = "7"><br>
+        Course Number: <input type = "text" class="form-control" name = "maristCourseNum" maxlength = "7" size = "7"><br>
          
-        Course Subject: <input type = "text" name = "maristCourseSubject" maxlength = "4" size = "4"><br>
+        Course Subject: <input type = "text" class="form-control" name = "maristCourseSubject" maxlength = "4" size = "4"><br>
          
-        <input type= "submit" value = "Submit">
+       <center> <input type= "submit" class="btn btn-success" value = "Submit"></center>
          
     </form>
-
+</div>
 
     <footer class="footer">
       <div class="container">

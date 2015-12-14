@@ -6,10 +6,9 @@
       exit();
     }
 ?>
-
 <html>
 <head>
-  <title>Admin | Remove Course</title>
+    <title>Admin | Course Transferred</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +18,7 @@
 <!-- Stylesheets -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<link href="css/logo-nav.css" rel="stylesheet">
+<link rel="stylesheet" href="css/logo-nav.css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="css/myStyleSheet.css">
 
@@ -69,55 +68,41 @@
         </div>
         <!-- /.container -->
     </nav>
+    <center><h3>
+    
+    <?php
+    // Connect to db
+    $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die ('Could not connect: ' . pg_last_error()); 
+       $dutchessCourse = $_POST['dccCourse1']; // Get dutchess value selected
+       $maristCourse = $_POST['maristCourse1']; // Get marist calue selected
 
-    <center><h3>Which course would you like to remove?</h3></center>
+       $dutchessCourse = intval(pg_escape_string($dutchessCourse)); //Escape Strings as integers
+       $maristCourse = intval(pg_escape_string($maristCourse));
+            
+    $result = pg_query_params($dbconn, 'INSERT INTO TransfersTo(courseId, maristCourseId) VALUES ($1, $2)', array($dutchessCourse, $maristCourse));
 
-    <form action="removeMaristCourse.php" method="post">
-
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-12 table-responsive">
-                <table class="table table-bordered table-hover table-sortable tab_logic">
-                    <thead>
-                        <tr>
-                            <th class="text-center">
-                                Course Name
-                            </th>
-                             </tr>
-                              </thead>
-                              <tbody>
-                                  <tr id='addr0' data-id="0" class='hidden'>
-
-                                    <td data-name="courseToDelete">
-                                      <select id = "courseToDelete" name="courseToDelete">
-                                        <option value = "" selected>Select Course</option>
-                                          
-                                      <?php  
-                                        $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123")
-                                        or die('Could not connect: ' . pg_last_error());
-                                  
-                                        $result = pg_query($dbconn, "SELECT maristcoursetitle, maristcourseid FROM maristcourses");
-                                        while ($row = pg_fetch_array($result)) {
-                                             echo '<option value = "'.$row['maristcourseid'].'">'.$row['maristcoursetitle'].'</option>';
-                                        }
-                                        pg_close($db);
-                                      ?>
-                        </select>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <center><input type= "submit" class="btn btn-danger" value = "Remove Course"></center>
-            </form>
+    if (!$result) {
+        $errormessage = pg_last_error();
+        echo "Error with query: " . $errormessage;
+        exit();
+    }
 
 
+    printf ("The Dutchess Communinty College course is now transferrable.");
+    pg_free_result($result);
+    pg_close();
+
+    ?>
+    <p><a href = "adminAddTransfersTo.php">Transfer another course?</a></p>
+    <p><a href = "adminHome.php">Click here to go home</a></p>
+</center></h3>
     <footer class="footer">
       <div class="container">
         <p class="text-muted">© 2015 Marist College</p>
       </div>
     </footer>
-  </body>
+ 
+</body>
 
 <!-- JavaScript Files  -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -125,5 +110,4 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="js/jquery.js"></script>
 <script src="js/myScripts.js"></script>
-
 </html>

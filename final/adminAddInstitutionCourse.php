@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
 ?>
 
 <html>
@@ -65,15 +69,17 @@ session_start();
         <!-- /.container -->
     </nav>
 
-    
+    <div class="container">
+        <p> Fill out the form below to add a new course from DCC </p>
 
     <form action = "addInstitutionCourse.php" method = "post">
                  
-        Course Title: <input type = "text" name = "institutionCourseTitle" maxlength = "60" size = "60"><br>
+        Course Title: <input type = "text" class="form-control" name = "institutionCourseTitle" maxlength = "60"><br>
         
-        Course Number: <input type = "text" name = "institutionCourseNum" maxlength = "7" size = "7"><br>
+        Course Number: <input type = "text" class="form-control" name = "institutionCourseNum" maxlength = "7"><br>
          
-        <input type= "submit" value = "Submit">
+        <center><input type= "submit" class="btn btn-success" value = "Submit"></center>
+    </div>
          
     </form>
 

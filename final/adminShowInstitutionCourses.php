@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
+?>
+
 <html>
 <head>
   <title>Admin | Institution Courses</title>
@@ -63,7 +71,7 @@
         <!-- /.container -->
     </nav>
     <center>
-  <h1>Admin - Show Institution Courses </h1>
+  <h1>Current DCC Courses </h1>
   <?php
 
     $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error());
@@ -76,19 +84,12 @@
   }    
 
   
-    $query = 'SELECT coursetitle, coursenum, createdOn, lastUpdated FROM institutioncourses ORDER BY coursenum';
+    $query = 'SELECT coursetitle, coursenum FROM institutioncourses ORDER BY coursenum';
     $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
     $i = 0;
 
-    echo '<html><body><table><tr>';
-      while ($i < pg_num_fields($result))
-      {
-        echo '<td>' . $fieldName . '</td>';
-        $i = $i + 1;
-      }
-        echo '</tr>';
-  $i = 0;
+    echo '<html><body><table class = "table table-hover"><thead><tr><td><b>Course Title</b></td><td><b>Course Number</b></td></tr></thead><tbody>';
 
 while ($row = pg_fetch_row($result)) 
 {
@@ -105,7 +106,7 @@ while ($row = pg_fetch_row($result))
   echo '</tr>';
   $i = $i + 1;
 }
-
+echo '</tbody>';
 pg_free_result($result);
 
 pg_close($dbconnection);

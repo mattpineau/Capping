@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
 ?>
 
 <html>
@@ -65,20 +69,21 @@ session_start();
         <!-- /.container -->
     </nav>
 
-    
+    <div class="container">
+        <p> Fill out the form below to add a new administrator account with admin privilages </p>
 
     <form action = "addAdmin.php" method = "post">
                  
-        First Name: <input type = "text" name = "newAdminFirstName" maxlength = "15" size = "15"><br>
+        First Name: <input type = "text" class="form-control" name = "newAdminFirstName" maxlength = "15" size = "15"><br>
         
-        Last Name: <input type = "text" name = "newAdminLastName" maxlength = "15" size = "15"><br>
+        Last Name: <input type = "text" class="form-control" name = "newAdminLastName" maxlength = "15" size = "15"><br>
          
-        E-Mail address: <input type = "text" name = "newAdminEmail" maxlength = "40" size = "40"><br>
+        E-Mail address: <input type = "text" class="form-control" name = "newAdminEmail" maxlength = "40" size = "40"><br>
 
-        Password: <input type = "text" name = "newAdminPassword" maxlength = "40" size = "40"><br>
+        Password: <input type = "password" class="form-control" name = "newAdminPassword" maxlength = "40" size = "40"><br>
          
-        <input type= "submit" value = "Submit">
-         
+       <center> <input type= "submit" class="btn btn-success" value = "Submit"></center>
+         </div>
     </form>
 
 

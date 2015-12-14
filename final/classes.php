@@ -1,4 +1,10 @@
-<?php session_start() 
+<?php 
+    session_start();
+
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
 
 ?>
 
@@ -64,10 +70,11 @@
        <center> <h3>What courses would you like to transfer?</h3>
       
     
-    <h4>When you are done entering your courses below, click on finish.</h4></center>
+    <h4>When you are done entering your courses below, click finish.</h4></center>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
     <div class="container">
+        <h5>*Note: If not all fields are filled our, the class will not be counted in the credit report.</h5>
         <form action = "getCreditReport.php" method = "post">
         <div class="row clearfix">
             <div class="col-md-12 table-responsive">
@@ -146,12 +153,12 @@
                             </td>
                         </tr>
                     </tbody>
-                </form>
                 </table>
             </div>
         </div>
-        <a id="add_row" class="btn btn-default pull-right">Add Class </a>
+
         <input type= "submit" value = "Finish" class="btn btn-success pull-right">
+        <a id="add_row" class="btn btn-default pull-right">Add Class </a>
         </form>
     </div>
 

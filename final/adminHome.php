@@ -1,5 +1,9 @@
 <?php
     session_start();
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
 ?>
 
 <html>
@@ -74,8 +78,8 @@
        		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 
-       	<input type="submit" name="admin-submit-addmaristcourses" id="admin-submit-addmaristcourses" tabindex="4" class="form-control btn btn-admindemo" value="Add Marist Courses">
-
+       	<input type="submit" name="admin-submit-addmaristcourses" id="admin-submit-addmaristcourses" tabindex="1" class="form-control btn btn-default" value="Add Marist Courses">
+</div>
        </div>
    </form>
 
@@ -85,30 +89,28 @@
           <div class="row">
       <div class="col-sm-6 col-sm-offset-3">
 
-        <input type="submit" name="admin-submit-addinstcourses" id="admin-submit-addinstcourses" tabindex="4" class="form-control btn btn-admindemo" value="Add Institution Courses">
+        <input type="submit" name="admin-submit-addinstcourses" id="admin-submit-addinstcourses" tabindex="2" class="form-control btn btn-default" value="Add DCC Courses">
 
        </div>
+     </div>
    </form>
 
 
-      <form action="/final/adminAddCourse.html" style="display: block;">
-
-       		<div class="row">
-			<div class="col-sm-6 col-sm-offset-3">
-
-       	<input type="submit"  name="admin-submit-editcourses" id="admin-submit-editcourses" tabindex="4" class="form-control btn btn-admindemo" value="Edit Courses">
-
-       </div>
-
-	</form>       
+  <form action="/final/adminAddTransfersTo.php" style="display: block;">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <input type="submit" name="admin-submit-addtransfers" id="admin-submit-addtransfers" tabindex="3" class="form-control btn btn-default" value="Add Transfers">
+        </div>
+      </div>
+  </form>      
 
        <form action="/final/adminRemoveCourse.php" style="display: block;">
 
        		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 
-       	<input type="submit" name="admin-submit-removecourses" id="admin-submit-removecourses" tabindex="4" class="form-control btn btn-admindemo" value="Remove Courses">
-
+       	<input type="submit" name="admin-submit-removecourses" id="admin-submit-removecourses" tabindex="4" class="btn btn-default btn-block" value="Remove Courses">
+</div>
        </div>
 		</form>
 
@@ -117,8 +119,8 @@
        		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 
-       	<input type="submit" name="admin-submit-showmaristcourses" id="admin-submit-showmaristcourses" tabindex="4" class="form-control btn btn-admindemo" value="Show Marist Courses">
-
+       	<input type="submit" name="admin-submit-showmaristcourses" id="admin-submit-showmaristcourses" tabindex="5" class="btn btn-default btn-block" value="Show Marist Courses">
+</div>
        </div>
    </form>
 
@@ -127,8 +129,8 @@
           <div class="row">
       <div class="col-sm-6 col-sm-offset-3">
 
-        <input type="submit" name="admin-submit-showinstitutioncourses" id="admin-submit-showinstitutioncourses" tabindex="4" class="form-control btn btn-admindemo" value="Show Institution Courses">
-
+        <input type="submit" name="admin-submit-showinstitutioncourses" id="admin-submit-showinstitutioncourses" tabindex="6" class="form-control btn btn-default" value="Show DCC Courses">
+</div>
        </div>
    </form>
 
@@ -137,8 +139,8 @@
           <div class="row">
       <div class="col-sm-6 col-sm-offset-3">
 
-        <input type="submit" name="admin-submit-addadmin" id="admin-submit-addadmin" tabindex="4" class="form-control btn btn-admindemo" value="Add New Administrator">
-
+        <input type="submit" name="admin-submit-addadmin" id="admin-submit-addadmin" tabindex="7" class="form-control btn btn-default" value="Add New Administrator">
+</div>
        </div>
    </form>
 

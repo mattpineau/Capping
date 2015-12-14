@@ -1,5 +1,10 @@
 <?php 
     session_start();
+
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
     
     $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error());
     
@@ -64,9 +69,8 @@
                  </ul>
     <ul class="nav navbar-nav navbar-right">
                     <li>
-                    
-                        <a class="pull-right" href="userHome.php">Home</a>
                         <a class="pull-right" href="logout.php"> Log Out</a>
+                        <a class="pull-right" href="userHome.php">Home</a>
                     </li>
                     
                 </ul>
@@ -111,7 +115,7 @@
         ?>
     </tbody>
   </table>
-  <a class = "pull-right" href = "studentMyTransferReports.php">Back to My Transfer Reports?</a>
+  <a class = "pull-right" href = "studentMyTransferReports.php">Back to My Transfer Reports</a>
 </div>
 
 </center>

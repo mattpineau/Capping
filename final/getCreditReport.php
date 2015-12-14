@@ -1,5 +1,11 @@
 
-<?php session_start() 
+<?php 
+    session_start();
+
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    } 
 
 ?>
 

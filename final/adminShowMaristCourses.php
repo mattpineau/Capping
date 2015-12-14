@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
+?>
+
 <html>
 <head>
   <title>Admin | Marist Courses</title>
@@ -50,8 +58,6 @@
                  </ul>
     <ul class="nav navbar-nav navbar-right">
                     <li>
-                    
-                    
                         <a class="pull-right" href="logout.php"> Log Out</a>
                         <a class="pull-right" href="adminHome.php">Home</a>
                     </li>
@@ -63,7 +69,7 @@
         <!-- /.container -->
     </nav>
     <center>
-  <h1>Admin - Show Marist Courses </h1>
+  <h1>Current Marist Courses</h1>
   <?php
 
     $dbconn = pg_connect("host=localhost dbname=AtlasDB user=postgres password=Globe123") or die('Could not connect: ' . pg_last_error());
@@ -76,19 +82,11 @@
   }    
 
   
-    $query = 'SELECT maristCourseTitle, maristCourseSubject, maristCourseNum, createdOn, lastUpdated FROM maristcourses ORDER BY maristCourseSubject, maristCourseNum';
+    $query = 'SELECT maristCourseTitle, maristCourseSubject, maristCourseNum FROM maristcourses ORDER BY maristCourseSubject, maristCourseNum';
     $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
-    $i = 0;
-
-    echo '<html><body><table><tr>';
-      while ($i < pg_num_fields($result))
-      {
-        echo '<td>' . $fieldName . '</td>';
-        $i = $i + 1;
-      }
-        echo '</tr>';
-  $i = 0;
+    echo '<html><body><table class = "table table-hover"><thead><tr><th><b>Course Title</b></th><th><b>Subject</b></th><th><b>Course Number</b></th></tr></thead><tbody>';
+    
 
 while ($row = pg_fetch_row($result)) 
 {
@@ -105,6 +103,7 @@ while ($row = pg_fetch_row($result))
   echo '</tr>';
   $i = $i + 1;
 }
+echo '</tbody>';
 
 pg_free_result($result);
 

@@ -1,4 +1,11 @@
+<?php 
+    session_start();
 
+    if (!isset($_SESSION['currentUserId']) || !isset($_SESSION['currentFirstName'])) {
+      header('Location: index.html');
+      exit();
+    }
+?>
 <html>
 <head>
     <title>Admin | Course Added</title>
